@@ -47,10 +47,10 @@ class MessageController extends Controller
      */
     public function show($slug, $slug_password)
     {
-        $message = Message::whereRaw("BINARY slug = ?", [$slug])->first();
+        $message = Message::slug($slug)->first();
 
         if ($message) {
-            if (Hash::check($slug_password, $message->slug_password)) {
+            if ($message->checkSlugPassword($slug_password, $message->slug_password)) {
                 return 'You are in!';
             }
         }

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Message;
 use Hidehalo\Nanoid\Client;
+use Hidehalo\Nanoid\CoreInterface;
 
 class MessageObserver
 {
@@ -15,12 +16,21 @@ class MessageObserver
      */
     public function creating(Message $message)
     {
-        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $alphabet = preg_replace('/[^a-zA-Z0-9]+/', '', CoreInterface::SAFE_SYMBOLS);
+        $done = false;
+        $size = true ? 12 : 36;
 
         $client = new Client();
-        $message->slug = $client->formattedId($alphabet, 12);
-        // for premium user
-        // $message->slug = $client->formattedId($alphabet, 36);
+
+        do {
+            $slug = $client->formattedId($alphabet, $size);
+
+            if (!Message::slug($slug)->exists()) {
+                $done = true;
+            }
+        } while(!$done);
+
+        $message->slug = $slug;
         $message->slug_password = bcrypt($client->formattedId($alphabet, 8));
     }
 

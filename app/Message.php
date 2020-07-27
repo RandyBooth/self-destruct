@@ -4,6 +4,7 @@ namespace App;
 
 use App\Observers\MessageObserver;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 
 class Message extends Model
@@ -32,5 +33,13 @@ class Message extends Model
     protected static function booted()
     {
         static::observe(MessageObserver::class);
+    }
+
+    public function scopeSlug($query, $slug) {
+        return $query->whereRaw("BINARY slug = ?", [$slug]);
+    }
+
+    public function checkSlugPassword($value, $hashedValue) {
+        return Hash::check($value, $hashedValue);
     }
 }
