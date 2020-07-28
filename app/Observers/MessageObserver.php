@@ -17,21 +17,29 @@ class MessageObserver
     public function creating(Message $message)
     {
         $alphabet = preg_replace('/[^a-zA-Z0-9]+/', '', CoreInterface::SAFE_SYMBOLS);
-        $done = false;
+        $is_done = false;
         $size = true ? 12 : 36;
+        $size_password = true ? 8 : 12;
 
         $client = new Client();
 
         do {
-            $slug = $client->formattedId($alphabet, $size);
+            $slug = $client->formattedId(
+                $alphabet,
+                $size
+            );
 
             if (!Message::slug($slug)->exists()) {
-                $done = true;
+                $is_done = true;
             }
-        } while(!$done);
+        } while(!$is_done);
 
         $message->slug = $slug;
-        $message->slug_password = bcrypt($client->formattedId($alphabet, 8));
+        $message->slug_password = $client->formattedId(
+            $alphabet,
+            $size_password
+        );
+        dump($message->slug . '@' . $message->slug_password);
     }
 
     /**

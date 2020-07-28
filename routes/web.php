@@ -17,4 +17,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/m/{slug}@{slug_password}', 'MessageController@show');
+Route::prefix('m')->group(
+    function () {
+        Route::get(
+            'hidden',
+            'MessageController@hidden'
+        )->middleware('throttle:60,5')->name('message.hidden');
+
+        Route::get(
+            '{slug}@{slug_password}',
+            'MessageController@show'
+        )->middleware('throttle:60,5')->name('message.show');
+
+        Route::post(
+            '{slug}@{slug_password}',
+            'MessageController@password'
+        )->middleware('throttle:30,10')->name('message.password');
+    }
+);

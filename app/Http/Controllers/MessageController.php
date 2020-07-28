@@ -47,15 +47,50 @@ class MessageController extends Controller
      */
     public function show($slug, $slug_password)
     {
+        $message = $this->getMessage($slug, $slug_password);
+
+        if (empty($message->password)) {
+            session()->flash('message_body', $message->body);
+            return redirect('hidden');
+        }
+
+        return view('messages.password', compact('slug', 'slug_password'));
+    }
+
+    public function hidden()
+    {
+        if (session()->has('message_body')) {
+            return view('messages.show', ['message_body' => session()->pull('message_body')]);
+        }
+
+        return view('messages.expired');
+    }
+
+    public function password(Request $request, $slug, $slug_password)
+    {
+        if ($request->has('password')) {
+            $message = $this->getMessage($slug, $slug_password);
+
+            if (Hash::check($request->password, $message->password)) {
+                session()->flash('message_body', $message->body);
+                return redirect()->route('message.hidden');
+            }
+        }
+
+        return redirect()->back();
+    }
+
+    private function getMessage($slug, $slug_password)
+    {
         $message = Message::slug($slug)->first();
 
         if ($message) {
             if ($message->checkSlugPassword($slug_password, $message->slug_password)) {
-                return 'You are in!';
+                return $message;
             }
         }
 
-        abort(404);
+        return view('messages.expired');
     }
 
     /**
