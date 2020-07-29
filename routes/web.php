@@ -13,22 +13,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'MessageController@index')->name('home');
+Route::post('/', 'MessageController@store')->name('message.store');
+
 Route::prefix('m')->group(
     function () {
         Route::get(
             'hidden',
             'MessageController@hidden'
-        )->middleware('throttle:60,5')->name('message.hidden');
+        )->name('message.hidden');
 
         Route::get(
             '{slug}@{slug_password}',
             'MessageController@show'
-        )->middleware('throttle:60,5')->name('message.show');
+        )->name('message.show');
 
         Route::post(
             '{slug}@{slug_password}',
             'MessageController@password'
-        )->middleware('throttle:30,10')->name('message.password');
+        )->name('message.password');
     }
 );
 

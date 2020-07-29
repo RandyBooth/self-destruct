@@ -26,7 +26,7 @@ class CreateMessagesTable extends Migration
             $table->string('slug_password');
             $table->text('body');
             $table->string('password')->nullable();
-            $table->datetime('expired_at');
+            $table->datetime('expired_at')->nullable();
             $table->timestamps();
         });
     }

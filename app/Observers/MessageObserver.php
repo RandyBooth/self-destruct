@@ -39,7 +39,7 @@ class MessageObserver
             $alphabet,
             $size_password
         );
-        dump($message->slug . '@' . $message->slug_password);
+        logger()->info($message->slug . '@' . $message->slug_password);
     }
 
     /**

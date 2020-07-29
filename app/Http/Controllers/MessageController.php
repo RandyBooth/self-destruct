@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\Rules\MessagePassword;
+use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {
@@ -15,7 +18,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
+        return view('messages.index');
     }
 
     /**
@@ -36,7 +39,41 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $throttler = Throttle::get($request->instance(), 5, 1);
+
+        if (!$throttler->check()) {
+            abort(429);
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'message' => [
+                    'required',
+                    // 'max:1000'
+                ],
+                'password' => [
+                    'string',
+                    'min:6',
+                ],
+            ],
+            [],
+        );
+
+        if ($validator->passes()) {
+            $message = Message::create(
+                [
+                    'body' => $request->message,
+                    'password' => $request->password
+
+                ]
+            );
+
+            $throttler->hit();
+            return redirect()->route('home')->with('submitted', true);
+        }
+
+        return redirect()->back()->withErrors($validator);
     }
 
     /**
@@ -45,13 +82,16 @@ class MessageController extends Controller
      * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function show($slug, $slug_password)
+    public function show(Request $request, $slug, $slug_password)
     {
-        $message = $this->getMessage($slug, $slug_password);
+        $message = $this->getMessage($slug, $slug_password, ['id', 'slug', 'slug_password', 'password', 'body']);
+
+        if (! $message) {
+            return view('messages.expired');
+        }
 
         if (empty($message->password)) {
-            session()->flash('message_body', $message->body);
-            return redirect('hidden');
+            return redirect()->route('message.hidden')->with('message_body', $message->body);
         }
 
         return view('messages.password', compact('slug', 'slug_password'));
@@ -68,21 +108,43 @@ class MessageController extends Controller
 
     public function password(Request $request, $slug, $slug_password)
     {
-        if ($request->has('password')) {
-            $message = $this->getMessage($slug, $slug_password);
+        $throttler = Throttle::get($request->instance(), 10, 5);
 
-            if (Hash::check($request->password, $message->password)) {
-                session()->flash('message_body', $message->body);
-                return redirect()->route('message.hidden');
-            }
+        if (!$throttler->check()) {
+            abort(429);
         }
 
-        return redirect()->back();
+        $message = $this->getMessage($slug, $slug_password, ['id', 'slug', 'slug_password', 'password', 'body']);
+
+        if (! $message) {
+            return view('messages.expired');
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'password' => [
+                    'required',
+                    'string',
+                    'min:6',
+                    new MessagePassword($message->password),
+                ],
+            ]
+        );
+
+        if ($validator->passes()) {
+            $throttler->clear();
+            return redirect()->route('message.hidden')->with('message_body', $message->body);
+        }
+
+        $throttler->hit();
+
+        return redirect()->back()->withErrors($validator);
     }
 
-    private function getMessage($slug, $slug_password)
+    private function getMessage($slug, $slug_password, $select = ['*'])
     {
-        $message = Message::slug($slug)->first();
+        $message = Message::select($select)->slug($slug)->first();
 
         if ($message) {
             if ($message->checkSlugPassword($slug_password, $message->slug_password)) {
@@ -90,7 +152,13 @@ class MessageController extends Controller
             }
         }
 
-        return view('messages.expired');
+        $throttler = Throttle::get(['ip' => request()->ip(), 'route' => 'message'], 50, 1);
+
+        if (!$throttler->check()) {
+            abort(429);
+        }
+
+        $throttler->hit();
     }
 
     /**
