@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::prefix('m')->group(
     function () {
         Route::get(
@@ -35,3 +31,7 @@ Route::prefix('m')->group(
         )->middleware('throttle:30,10')->name('message.password');
     }
 );
+
+// Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
