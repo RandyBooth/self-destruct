@@ -70,7 +70,19 @@ class MessageController extends Controller
             );
 
             $throttler->hit();
-            return redirect()->route('home')->with('submitted', true);
+
+            return redirect()
+                ->route('home')
+                ->with(
+                    'link',
+                    route(
+                        'message.show',
+                        [
+                            'slug' => $message->slug,
+                            'slug_password' => $message->slug_password,
+                        ]
+                    )
+                );
         }
 
         return redirect()->back()->withErrors($validator);

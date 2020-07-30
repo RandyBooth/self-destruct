@@ -35,11 +35,13 @@ class Message extends Model
         static::observe(MessageObserver::class);
     }
 
-    public function scopeSlug($query, $slug) {
+    public function scopeSlug($query, $slug)
+    {
         return $query->whereRaw("BINARY slug = ?", [$slug]);
     }
 
-    public function checkSlugPassword($password1, $password2) {
+    public function checkSlugPassword($password1, $password2)
+    {
         return $password1 === $password2;
     }
 }

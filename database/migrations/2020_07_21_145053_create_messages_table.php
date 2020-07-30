@@ -24,7 +24,7 @@ class CreateMessagesTable extends Migration
             $table->uuid('id')->primary();
             $table->string('slug', 36);
             $table->string('slug_password');
-            $table->text('body');
+            $table->mediumText('body');
             $table->string('password')->nullable();
             $table->datetime('expired_at')->nullable();
             $table->timestamps();

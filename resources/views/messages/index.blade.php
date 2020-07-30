@@ -3,9 +3,8 @@
 @section('title', 'Home')
 
 @section('content')
+    @if(session()->has('link'))
     <div class="w-full md:w-2/3 lg:w-1/2 mx-auto bg-white shadow-md rounded px-8 pt-10 pb-12">
-        {{ var_dump(session()->all()) }}
-    @isset($submitted)
         <div>
             <label class="block text-gray-700 text-lg font-bold mb-2" for="link">
                 Link
@@ -15,10 +14,12 @@
                 name="link"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 readonly
-                value=""
+                value="{{ session()->get('link') }}"
             />
         </div>
+    </div>
     @else
+    <div class="w-full md:w-2/3 lg:w-2/3 mx-auto bg-white shadow-md rounded px-8 pt-10 pb-12">
         <form method="POST" action="{{ route('message.store') }}">
             {{ csrf_field() }}
 
@@ -46,6 +47,6 @@
                 </button>
             </div>
         </form>
-    @endisset
     </div>
+    @endisset
 @endsection
