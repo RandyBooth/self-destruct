@@ -54,8 +54,15 @@ class MessageController extends Controller
                     // 'max:1000'
                 ],
                 'password' => [
+                    'present',
+                    'nullable',
                     'string',
                     'min:6',
+                ],
+                'expired' => [
+                    'present',
+                    'nullable',
+                    'integer',
                 ],
             ],
             [],
@@ -65,8 +72,10 @@ class MessageController extends Controller
             $message = Message::create(
                 [
                     'body' => $request->message,
-                    'password' => $request->password
-
+                    'password' => $request->password,
+                    'expired_at' => ($request->expired)
+                        ? now()->addHours($request->expired)
+                        : null,
                 ]
             );
 
@@ -86,7 +95,7 @@ class MessageController extends Controller
                 );
         }
 
-        return redirect()->back()->withErrors($validator);
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**

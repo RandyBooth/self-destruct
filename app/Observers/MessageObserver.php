@@ -39,6 +39,9 @@ class MessageObserver
             $alphabet,
             $size_password
         );
+        $message->password = ($message->password)
+            ? bcrypt($message->password)
+            : null;
         logger()->info($message->slug . '@' . $message->slug_password);
     }
 
