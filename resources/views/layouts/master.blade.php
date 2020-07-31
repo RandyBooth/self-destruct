@@ -16,7 +16,7 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="flex flex-col bg-gray-100 min-h-screen antialiased leading-none">
-    <header class="bg-white border-t-8 border-blue-500 shadow-sm">
+    <header class="bg-white border-t-8 border-primary shadow">
         <nav class="container mx-auto px-6 py-8">
             <div class="flex {{-- items-center justify-center --}}">
                 <div class="mr-6">
@@ -50,7 +50,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-blue-500 text-white">
+    <footer class="bg-white text-gray-900 shadow">
         <div class="container mx-auto px-6 py-8">
             Footer
         </div>
