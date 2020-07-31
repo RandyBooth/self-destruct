@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Expire;
 use App\Message;
 use App\Rules\MessagePassword;
 use GrahamCampbell\Throttle\Facades\Throttle;
@@ -18,7 +19,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return view('messages.index');
+        return view('messages.index', ['expires' => Expire::plucked()]);
     }
 
     /**

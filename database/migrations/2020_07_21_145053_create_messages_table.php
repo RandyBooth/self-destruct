@@ -13,13 +13,6 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        /**
-         * after reading it
-         * 1 hour from now
-         * 24 hours from now
-         * 7 days from now
-         * 30 days from now
-         */
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('slug', 36);
