@@ -103,6 +103,8 @@ class MessageController extends Controller
         }
 
         if (empty($message->password)) {
+            $message->delete();
+
             return redirect()->route('message.hidden')->with('message_body', $message->body);
         }
 
@@ -146,6 +148,8 @@ class MessageController extends Controller
 
         if ($validator->passes()) {
             $throttler->clear();
+            $message->delete();
+
             return redirect()->route('message.hidden')->with('message_body', $message->body);
         }
 
