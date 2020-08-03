@@ -38,7 +38,7 @@
                 @enderror
             </div>
 
-            <div>
+            {{-- <div>
                 <span class="block my-4 text-lg text-primary font-bold">-- Test Start --</span>
 
                 <pre><code>{{ var_dump($errors) }}</code></pre>
@@ -84,7 +84,7 @@
                 </div>
 
                 <span class="block my-4 text-lg text-primary font-bold">-- Test End --</span>
-            </div>
+            </div> --}}
 
             <div>
                 <button

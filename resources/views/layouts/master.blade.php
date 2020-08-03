@@ -10,10 +10,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/script.js') }}" defer></script>
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/style.css') }}" rel="stylesheet">
 </head>
 <body class="flex flex-col bg-gray-100 min-h-screen antialiased leading-none">
     <header class="bg-white border-t-8 border-primary shadow">
@@ -50,9 +50,11 @@
         @yield('content')
     </main>
 
-    <footer class="bg-white text-gray-900 shadow">
-        <div class="container mx-auto px-6 py-8">
-            Footer
+    <footer>
+        <div class="bg-white text-gray-900 shadow-inner">
+            <div class="container mx-auto px-6 py-8 text-center">
+                &copy; {{ now()->format('Y') }} {{ config('app.name') }}. All Rights Reserved.
+            </div>
         </div>
     </footer>
 </body>

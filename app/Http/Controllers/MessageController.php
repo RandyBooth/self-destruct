@@ -54,13 +54,13 @@ class MessageController extends Controller
                     // 'max:1000'
                 ],
                 'password' => [
-                    'present',
+                    // 'present',
                     'nullable',
                     'string',
                     'min:6',
                 ],
                 'expired' => [
-                    'present',
+                    // 'present',
                     'nullable',
                     'integer',
                 ],
