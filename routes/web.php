@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'MessageController@index')->name('home');
 Route::post('/', 'MessageController@store')->name('message.store');
 
-Route::get('contact', fn() => 'coming soon');
-Route::get('privacy', fn() => 'coming soon');
+// Route::get('contact', fn() => 'coming soon');
+// Route::get('privacy', fn() => 'coming soon');
 
 Route::prefix('m')->group(
     function () {
