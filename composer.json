@@ -17,7 +17,8 @@
         "guzzlehttp/guzzle": "^6.3",
         "hidehalo/nanoid-php": "^1.1",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "spatie/laravel-sitemap": "^5.7"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
