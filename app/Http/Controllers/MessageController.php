@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {
+    private $_select;
+
+    public function __construct()
+    {
+        $this->_select = [
+            'id',
+            'slug',
+            'slug_password',
+            'password',
+            'body',
+            'expired_at'
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -106,7 +120,7 @@ class MessageController extends Controller
      */
     public function show(Request $request, $slug, $slug_password)
     {
-        $message = $this->getMessage($slug, $slug_password, ['id', 'slug', 'slug_password', 'password', 'body']);
+        $message = $this->getMessage($slug, $slug_password, $this->_select);
 
         if (! $message) {
             return view('messages.expired');
@@ -138,7 +152,7 @@ class MessageController extends Controller
             abort(429);
         }
 
-        $message = $this->getMessage($slug, $slug_password, ['id', 'slug', 'slug_password', 'password', 'body']);
+        $message = $this->getMessage($slug, $slug_password, $this->_select);
 
         if (! $message) {
             return view('messages.expired');
