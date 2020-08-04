@@ -68,6 +68,21 @@ class MessageObserver
     }
 
     /**
+     * Handle the message "deleting" event.
+     *
+     * @param  \App\Message  $message
+     * @return void
+     */
+    public function deleting(Message $message)
+    {
+        if (!is_null($message->expired_at)) {
+            if (now()->diffInSeconds($message->expired_at, false) > 0) {
+                return false;
+            }
+        }
+    }
+
+    /**
      * Handle the message "deleted" event.
      *
      * @param  \App\Message  $message
