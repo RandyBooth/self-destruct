@@ -4,6 +4,7 @@ namespace App;
 
 use App\Observers\MessageObserver;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 
 class Message extends Model
@@ -32,6 +33,15 @@ class Message extends Model
 
     protected static function booted()
     {
+        static::addGlobalScope(
+            'expired',
+            function (Builder $builder) {
+                $builder
+                    ->where('expired_at', '>', now())
+                    ->orWhereNull('expired_at');
+            }
+        );
+
         static::observe(MessageObserver::class);
     }
 
