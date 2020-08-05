@@ -12,7 +12,7 @@
             <input
                 type="text"
                 name="link"
-                class="shadow appearance-none border rounded-sm w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                class="block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 readonly
                 value="{{ session()->get('link') }}"
             />
@@ -30,8 +30,9 @@
                 <textarea
                     id="note"
                     name="note"
-                    class="form-textarea mt-1 block w-full p-2 mb-3 border border-gray-300 focus:outline-none focus:shadow-outline @error('note')border-primary @enderror"
+                    class="form-textarea block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('note')border-primary @enderror"
                     rows="10"
+                    placeholder="Enter your note..."
                 >{{ old('note') }}</textarea>
                 @error('note')
                     <p class="text-primary text-xs italic">{{ $errors->first('note') }}</p>
@@ -39,43 +40,41 @@
             </div>
 
             <div class="mb-6">
-                <div>
-                    <label class="block text-gray-700 text-lg font-bold mb-2" for="inline-full-name">
-                        Password
-                    </label>
-                        <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        class="form-input mt-1 block w-full p-2 mb-3 border border-gray-300 focus:outline-none focus:shadow-outline @error('password')border-primary @enderror"
-                    >
-                    @error('password')
-                        <p class="text-primary text-xs italic">{{ $errors->first('password') }}</p>
-                    @enderror
-                </div>
+                <label class="block text-gray-700 text-lg font-bold mb-2" for="inline-full-name">
+                    Password
+                </label>
+                    <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('password')border-primary @enderror"
+                >
+                @error('password')
+                    <p class="text-primary text-xs italic">{{ $errors->first('password') }}</p>
+                @enderror
+            </div>
 
-                <div>
-                    <label class="block text-gray-700 text-lg font-bold mb-2" for="inline-full-name">
-                        Expired
-                    </label>
-                    <div class="relative">
-                        <select
-                            class="form-input mt-1 block w-full p-2 mb-3 border border-gray-300 focus:outline-none focus:shadow-outline @error('expired')border-primary @enderror"
-                            name="expired"
-                        >
-                            <option value="">Destruct after reading</option>
-                            @foreach($expires as $key => $val)
-                            <option value="{{ $key }}" {{ old('expired') == $key ? 'selected' : ''  }}>{{ $val }}</option>
-                            @endforeach
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                        </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-lg font-bold mb-2" for="inline-full-name">
+                    Expiration
+                </label>
+                <div class="relative">
+                    <select
+                        class="form-select block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('expiration')border-primary @enderror"
+                        name="expiration"
+                    >
+                        <option value="">Destruct after reading</option>
+                        @foreach($expires as $key => $val)
+                        <option value="{{ $key }}" {{ old('expiration') == $key ? 'selected' : ''  }}>{{ $val }}</option>
+                        @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                     </div>
-                    @error('expired')
-                        <p class="text-primary text-xs italic">{{ $errors->first('expired') }}</p>
-                    @enderror
                 </div>
+                @error('expiration')
+                    <p class="text-primary text-xs italic">{{ $errors->first('expiration') }}</p>
+                @enderror
             </div>
 
             <div>

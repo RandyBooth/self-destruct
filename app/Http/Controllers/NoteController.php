@@ -73,7 +73,7 @@ class NoteController extends Controller
                     'string',
                     'min:6',
                 ],
-                'expired' => [
+                'expiration' => [
                     'present',
                     'nullable',
                     'integer',
@@ -87,8 +87,8 @@ class NoteController extends Controller
                 [
                     'body' => $request->note,
                     'password' => $request->password,
-                    'expired_at' => ($request->expired)
-                        ? now()->addHours($request->expired)
+                    'expired_at' => ($request->expiration)
+                        ? now()->addHours($request->expiration)
                         : null,
                 ]
             );

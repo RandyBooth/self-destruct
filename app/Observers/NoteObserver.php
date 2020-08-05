@@ -18,7 +18,7 @@ class NoteObserver
     {
         $alphabet = preg_replace('/[^a-zA-Z0-9]+/', '', CoreInterface::SAFE_SYMBOLS);
         $is_done = false;
-        $size = true ? 12 : 24; // 12, 24, 36
+        $size = true ? 8 : 24; // 12, 24, 36
         $size_password = true ? 8 : 12;
 
         $client = new Client();

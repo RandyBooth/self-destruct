@@ -15,7 +15,7 @@
                     type="password"
                     id="password"
                     name="password"
-                    class="shadow appearance-none border rounded-sm w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline @error('password')border-primary @enderror"
+                    class="block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('password')border-primary @enderror"
                     placeholder="********"
                 />
                 @error('password')
@@ -28,7 +28,7 @@
                     type="submit"
                     class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-sm shadow focus:outline-none focus:shadow-outline"
                 >
-                    View Message
+                    View Note
                 </button>
 
                 <a
