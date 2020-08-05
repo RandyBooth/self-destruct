@@ -13,28 +13,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'MessageController@index')->name('home');
-Route::post('/', 'MessageController@store')->name('message.store');
+Route::get('/', 'NoteController@index')->name('home');
+Route::post('/', 'NoteController@store')->name('note.store');
 
 // Route::get('contact', fn() => 'coming soon');
 // Route::get('privacy', fn() => 'coming soon');
 
-Route::prefix('m')->group(
+Route::prefix('n')->group(
     function () {
         Route::get(
             'hidden',
-            'MessageController@hidden'
-        )->name('message.hidden');
+            'NoteController@hidden'
+        )->name('note.hidden');
 
         Route::get(
             '{slug}@{slug_password}',
-            'MessageController@show'
-        )->name('message.show');
+            'NoteController@show'
+        )->name('note.show');
 
         Route::post(
             '{slug}@{slug_password}',
-            'MessageController@password'
-        )->name('message.password');
+            'NoteController@password'
+        )->name('note.password');
     }
 );
 
