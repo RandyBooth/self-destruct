@@ -1,17 +1,17 @@
 @extends('layouts.master')
 
-@section('title', 'Message')
+@section('title', 'Note')
 
 @section('content')
     <div class="w-full md:w-2/3 lg:w-2/3 mx-auto bg-white shadow-md rounded-sm px-8 pt-10 pb-12">
-        <label class="block text-gray-700 text-lg font-bold mb-2" for="message">
-            Message
+        <label class="block text-gray-700 text-lg font-bold mb-2" for="note">
+            Note
         </label>
         <textarea
-            id="message"
+            id="note"
             class="form-textarea mt-1 block w-full p-2 mb-3 border border-gray-300 focus:outline-none focus:shadow-outline"
             rows="10"
             readonly
-        >{{ $message_body }}</textarea>
+        >{{ $note_body }}</textarea>
     </div>
 @endsection

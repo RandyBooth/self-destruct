@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Expire;
-use App\Message;
-use App\Rules\MessagePassword;
+use App\Note;
+use App\Rules\NotePassword;
 use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class MessageController extends Controller
+class NoteController extends Controller
 {
     private $_select;
 
@@ -33,7 +33,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return view('messages.index', ['expires' => Expire::plucked()]);
+        return view('notes.index', ['expires' => Expire::plucked()]);
     }
 
     /**
@@ -63,18 +63,18 @@ class MessageController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'message' => [
+                'note' => [
                     'required',
                     // 'max:1000'
                 ],
                 'password' => [
-                    // 'present',
+                    'present',
                     'nullable',
                     'string',
                     'min:6',
                 ],
                 'expired' => [
-                    // 'present',
+                    'present',
                     'nullable',
                     'integer',
                 ],
@@ -83,9 +83,9 @@ class MessageController extends Controller
         );
 
         if ($validator->passes()) {
-            $message = Message::create(
+            $note = Note::create(
                 [
-                    'body' => $request->message,
+                    'body' => $request->note,
                     'password' => $request->password,
                     'expired_at' => ($request->expired)
                         ? now()->addHours($request->expired)
@@ -100,10 +100,10 @@ class MessageController extends Controller
                 ->with(
                     'link',
                     route(
-                        'message.show',
+                        'note.show',
                         [
-                            'slug' => $message->slug,
-                            'slug_password' => $message->slug_password,
+                            'slug' => $note->slug,
+                            'slug_password' => $note->slug_password,
                         ]
                     )
                 );
@@ -115,33 +115,33 @@ class MessageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Message  $message
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $slug, $slug_password)
     {
-        $message = $this->getMessage($slug, $slug_password, $this->_select);
+        $note = $this->getNote($slug, $slug_password, $this->_select);
 
-        if (! $message) {
-            return view('messages.expired');
+        if (! $note) {
+            return view('notes.expired');
         }
 
-        if (empty($message->password)) {
-            $message->delete();
+        if (empty($note->password)) {
+            $note->delete();
 
-            return redirect()->route('message.hidden')->with('message_body', $message->body);
+            return redirect()->route('note.hidden')->with('note_body', $note->body);
         }
 
-        return view('messages.password', compact('slug', 'slug_password'));
+        return view('notes.password', compact('slug', 'slug_password'));
     }
 
     public function hidden()
     {
-        if (session()->has('message_body')) {
-            return view('messages.show', ['message_body' => session()->pull('message_body')]);
+        if (session()->has('note_body')) {
+            return view('notes.show', ['note_body' => session()->pull('note_body')]);
         }
 
-        return view('messages.expired');
+        return view('notes.expired');
     }
 
     public function password(Request $request, $slug, $slug_password)
@@ -152,10 +152,10 @@ class MessageController extends Controller
             abort(429);
         }
 
-        $message = $this->getMessage($slug, $slug_password, $this->_select);
+        $note = $this->getNote($slug, $slug_password, $this->_select);
 
-        if (! $message) {
-            return view('messages.expired');
+        if (! $note) {
+            return view('notes.expired');
         }
 
         $validator = Validator::make(
@@ -165,16 +165,16 @@ class MessageController extends Controller
                     'required',
                     'string',
                     'min:6',
-                    new MessagePassword($message->password),
+                    new NotePassword($note->password),
                 ],
             ]
         );
 
         if ($validator->passes()) {
             $throttler->clear();
-            $message->delete();
+            $note->delete();
 
-            return redirect()->route('message.hidden')->with('message_body', $message->body);
+            return redirect()->route('note.hidden')->with('note_body', $note->body);
         }
 
         $throttler->hit();
@@ -182,17 +182,17 @@ class MessageController extends Controller
         return redirect()->back()->withErrors($validator);
     }
 
-    private function getMessage($slug, $slug_password, $select = ['*'])
+    private function getNote($slug, $slug_password, $select = ['*'])
     {
-        $message = Message::select($select)->slug($slug)->first();
+        $note = Note::select($select)->slug($slug)->first();
 
-        if ($message) {
-            if ($message->checkSlugPassword($slug_password, $message->slug_password)) {
-                return $message;
+        if ($note) {
+            if ($note->checkSlugPassword($slug_password, $note->slug_password)) {
+                return $note;
             }
         }
 
-        $throttler = Throttle::get(['ip' => request()->ip(), 'route' => 'message'], 50, 1);
+        $throttler = Throttle::get(['ip' => request()->ip(), 'route' => 'note'], 50, 1);
 
         if (!$throttler->check()) {
             abort(429);
@@ -204,10 +204,10 @@ class MessageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Message  $message
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function edit(Message $message)
+    public function edit(Note $note)
     {
         //
     }
@@ -216,10 +216,10 @@ class MessageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Message  $message
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(Request $request, Note $note)
     {
         //
     }
@@ -227,10 +227,10 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Message  $message
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Message $message)
+    public function destroy(Note $note)
     {
         //
     }

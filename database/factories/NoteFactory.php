@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Message;
+use App\Note;
 use Faker\Generator as Faker;
 
-$factory->define(Message::class, function (Faker $faker) {
+$factory->define(Note::class, function (Faker $faker) {
     return [
         'body' => $faker->text(200),
         'password' => bcrypt('password'),

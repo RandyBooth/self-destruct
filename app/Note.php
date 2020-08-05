@@ -2,12 +2,12 @@
 
 namespace App;
 
-use App\Observers\MessageObserver;
+use App\Observers\NoteObserver;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use betterapp\LaravelDbEncrypter\Traits\EncryptableDbAttribute;
 
-class Message extends Model
+class Note extends Model
 {
     use EncryptableDbAttribute;
 
@@ -42,7 +42,7 @@ class Message extends Model
             }
         );
 
-        static::observe(MessageObserver::class);
+        static::observe(NoteObserver::class);
     }
 
     public function scopeSlug($query, $slug)

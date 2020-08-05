@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 
-class MessagePassword implements Rule
+class NotePassword implements Rule
 {
     public $password;
 

@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Message;
+use App\Note;
 use Illuminate\Console\Command;
 
-class RemoveExpiredMessage extends Command
+class RemoveExpiredNote extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'sd:remove-expired-message';
+    protected $signature = 'sd:remove-expired-note';
 
     /**
      * The console command description.
@@ -38,12 +38,12 @@ class RemoveExpiredMessage extends Command
      */
     public function handle()
     {
-        Message::withoutEvents(
+        Note::withoutEvents(
             function () {
                 $now = now();
                 $nowSub30Days = $now->copy()->subDays(30);
 
-                Message
+                Note
                     ::withoutGlobalScope('expired')
                     ->where('expired_at', '<=', $now)
                     ->orWhere(

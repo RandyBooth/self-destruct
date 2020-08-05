@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'Message')
+@section('title', 'Note')
 
 @section('content')
     <div class="w-full md:w-2/3 lg:w-1/2 mx-auto bg-white shadow-md rounded-sm px-8 pt-10 pb-12">
-        <form method="POST" action="{{ route('message.password', compact('slug', 'slug_password')) }}">
+        <form method="POST" action="{{ route('note.password', compact('slug', 'slug_password')) }}">
             {{ csrf_field() }}
 
             <div class="mb-6">
