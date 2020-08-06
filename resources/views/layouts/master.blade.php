@@ -10,6 +10,7 @@
     <title>{{ config('app.name') }} - @yield('title', 'Encrypt and send notes that will self-destruct after being read.')</title>
 
     @yield('script-block')
+
     <!-- Styles -->
     <link href="{{ mix('css/style.css') }}" rel="stylesheet">
 </head>

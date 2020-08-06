@@ -9,11 +9,20 @@
             </label>
             <input
                 type="text"
+                id="link"
                 name="link"
                 class="block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 readonly
                 value="{{ session()->get('link') }}"
             />
+
+            <button
+                type="button"
+                class="clipboard text-primary text-sm font-bold text-small py-3 px-4"
+                data-clipboard-target="#link"
+            >
+                Copy to clipboard
+            </button>
         </div>
     </div>
     @else
@@ -102,6 +111,7 @@
 @endsection
 
 @section('script-block')
-<!-- Scripts -->
-<script src="{{ mix('js/script.js') }}" defer></script>
+    <!-- Scripts -->
+    <script src="{{ mix('js/alpine.js') }}" defer></script>
+    <script src="{{ mix('js/clipboard.js') }}" defer></script>
 @endsection

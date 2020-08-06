@@ -11,5 +11,18 @@
             rows="10"
             readonly
         >{{ $note_body }}</textarea>
+
+        <button
+            type="button"
+            class="clipboard text-primary text-sm font-bold text-small py-3 px-4"
+            data-clipboard-target="#note"
+        >
+            Copy to clipboard
+        </button>
     </div>
+@endsection
+
+@section('script-block')
+    <!-- Scripts -->
+    <script src="{{ mix('js/clipboard.js') }}" defer></script>
 @endsection

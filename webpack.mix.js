@@ -13,9 +13,15 @@ require('laravel-mix-tailwind');
  |
  */
 
-mix.js('resources/js/script.js', 'public/js')
-   .postCss('resources/css/style.css', 'public/css')
-   .tailwind('./tailwind.config.js');
+mix
+    .js('resources/js/alpine.js', 'public/js')
+    .js('resources/js/clipboard.js', 'public/js')
+;
+
+mix
+    .postCss('resources/css/style.css', 'public/css')
+    .tailwind('./tailwind.config.js')
+;
 
 if (mix.inProduction()) {
   mix.version();
