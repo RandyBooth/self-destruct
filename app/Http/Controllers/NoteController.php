@@ -118,7 +118,7 @@ class NoteController extends Controller
      * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $slug, $slug_password)
+    public function show(Request $request, $slug, $slug_password = null)
     {
         $note = $this->getNote($slug, $slug_password, $this->_select);
 

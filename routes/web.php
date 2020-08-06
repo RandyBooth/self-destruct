@@ -31,6 +31,11 @@ Route::prefix('n')->group(
             'NoteController@show'
         )->name('note.show');
 
+        Route::get(
+            '{slug}',
+            'NoteController@show'
+        );
+
         Route::post(
             '{slug}@{slug_password}',
             'NoteController@password'
