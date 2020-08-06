@@ -9,9 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/script.js') }}" defer></script>
-
+    @yield('script-block')
     <!-- Styles -->
     <link href="{{ mix('css/style.css') }}" rel="stylesheet">
 </head>
