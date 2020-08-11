@@ -24,7 +24,7 @@
             <div>
                 <button
                     type="submit"
-                    class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-sm shadow focus:outline-none focus:shadow-outline"
+                    class="bg-primary text-white font-bold py-3 px-4 rounded-sm shadow focus:outline-none focus:shadow-outline"
                 >
                     View Note
                 </button>

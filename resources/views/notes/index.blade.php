@@ -100,7 +100,7 @@
             <div>
                 <button
                     type="submit"
-                    class="bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-sm shadow focus:outline-none focus:shadow-outline mr-2"
+                    class="bg-primary text-white font-bold py-3 px-4 rounded-sm shadow focus:outline-none focus:shadow-outline mr-2"
                 >
                     Create Note
                 </button>
