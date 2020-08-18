@@ -7,6 +7,7 @@ use App\Note;
 use App\Rules\NotePassword;
 use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -109,7 +110,21 @@ class NoteController extends Controller
                 );
         }
 
-        return redirect()->back()->withErrors($validator)->withInput();
+        $filtered = Arr::except($request->all(), ['_token', 'note']);
+        $show_options = false;
+
+        foreach ($filtered as $data) {
+            if (!is_null($data)) {
+                $show_options = true;
+                break;
+            }
+        }
+
+        return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with(compact('show_options'));
     }
 
     /**

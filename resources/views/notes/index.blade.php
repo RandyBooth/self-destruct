@@ -26,7 +26,7 @@
         </div>
     </div>
     @else
-    <div class="w-full md:w-2/3 lg:w-2/3 mx-auto bg-white shadow-md rounded-sm px-8 pt-10 pb-12" x-data="{ open: false }">
+    <div class="w-full md:w-2/3 lg:w-2/3 mx-auto bg-white shadow-md rounded-sm px-8 pt-10 pb-12" x-data="{ open:@if(session()->has('show_options')) {{ json_encode(session()->get('show_options')) }} @else false @endif}">
         <form method="POST" action="{{ route('note.store') }}">
             {{ csrf_field() }}
 
