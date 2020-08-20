@@ -10,7 +10,7 @@
             class="form-textarea block appearance-none w-full mt-1 mb-3 p-2 border border-gray-300 rounded-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             rows="10"
             readonly
-        >{{ $note_body }}</textarea>
+        >{{ $note['body'] }}</textarea>
 
         <button
             type="button"
