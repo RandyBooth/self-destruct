@@ -144,7 +144,9 @@ class NoteController extends Controller
         if (empty($note->password)) {
             $note->delete();
 
-            return redirect()->route('note.hidden')->with('note_body', $note->body);
+            return redirect()
+                ->route('note.hidden')
+                ->with('note', $note);
         }
 
         return view('notes.password', compact('slug', 'slug_password'));
@@ -152,8 +154,8 @@ class NoteController extends Controller
 
     public function hidden()
     {
-        if (session()->has('note_body')) {
-            return view('notes.show', ['note_body' => session()->pull('note_body')]);
+        if (session()->has('note')) {
+            return view('notes.show')->with('note', session()->pull('note'));
         }
 
         return view('notes.expired');
@@ -189,31 +191,14 @@ class NoteController extends Controller
             $throttler->clear();
             $note->delete();
 
-            return redirect()->route('note.hidden')->with('note_body', $note->body);
+            return redirect()
+                ->route('note.hidden')
+                ->with('note', $note);
         }
 
         $throttler->hit();
 
         return redirect()->back()->withErrors($validator);
-    }
-
-    private function getNote($slug, $slug_password, $select = ['*'])
-    {
-        $note = Note::select($select)->slug($slug)->first();
-
-        if ($note) {
-            if ($note->checkSlugPassword($slug_password, $note->slug_password)) {
-                return $note;
-            }
-        }
-
-        $throttler = Throttle::get(['ip' => request()->ip(), 'route' => 'note'], 50, 1);
-
-        if (!$throttler->check()) {
-            abort(429);
-        }
-
-        $throttler->hit();
     }
 
     /**
@@ -248,5 +233,31 @@ class NoteController extends Controller
     public function destroy(Note $note)
     {
         //
+    }
+
+    private function getNote($slug, $slug_password, $select = ['*'])
+    {
+        $note = Note::select($select)->slug($slug)->first();
+
+        if ($note) {
+            if ($note->checkSlugPassword($slug_password, $note->slug_password)) {
+                return $note;
+            }
+        }
+
+        $throttler = Throttle::get(
+            [
+                'ip' => request()->ip(),
+                'route' => 'note'
+            ],
+             50,
+             1
+        );
+
+        if (!$throttler->check()) {
+            abort(429);
+        }
+
+        $throttler->hit();
     }
 }
